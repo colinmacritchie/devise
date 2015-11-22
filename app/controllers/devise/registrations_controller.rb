@@ -38,6 +38,25 @@ class Devise::RegistrationsController < DeviseController
     end
   end
 
+    def number_new
+    @phone_number = PhoneNumber.new
+  end
+
+  def number_create
+    @phone_number = PhoneNumber.find_or_create_by(phone_number: params[:phone_number][:phone_number])
+    @phone_number.generate_pin
+    @phone_number.send_pin
+    respond to do |format|
+      format.json
+    end
+  end
+
+  def verify
+    @phone_number = PhoneNumber.find_by(phone_number: params[:hidden_phone_number])
+    @phone_number.verify(params[:pin])
+  end
+
+
   # GET /resource/edit
   def edit
     render :edit
