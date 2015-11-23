@@ -157,6 +157,10 @@ class Devise::RegistrationsController < DeviseController
     self.resource = send(:"current_#{resource_name}")
   end
 
+  def phone_params
+    params.require(:phone_number).permit(:phone_number)
+  end
+
   def sign_up_params
     devise_parameter_sanitizer.sanitize(:sign_up)
   end
